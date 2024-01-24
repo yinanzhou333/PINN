@@ -55,7 +55,7 @@ class Pendulum:
 
 # Example usage
 if __name__ == "__main__":
-    pendulum = Pendulum(length=1.0, mass=1.0, gravity=9.81)
+    pendulum = Pendulum(length=1.0, mass=0.1, gravity=9.81)
 
     # Simulation parameters
     initial_state = [0, 0]  # Initial state [theta, omega]
@@ -64,7 +64,7 @@ if __name__ == "__main__":
     # Define a time-dependent torque profile (e.g., torque increases linearly with time)
     def linear_torque(t):
         return 1.2*t
-    def square_wave_torque(t, frequency=0.2, amplitude=10):
+    def square_wave_torque(t, frequency=0.2, amplitude=1):
         return amplitude * np.sign(np.sin(2 * np.pi * frequency * t))
     
     pendulum.set_torque_profile(square_wave_torque)
