@@ -55,7 +55,7 @@ class Pendulum:
 
 # Example usage
 if __name__ == "__main__":
-    pendulum = Pendulum(length=1.0, mass=0.1, gravity=9.81)
+    pendulum = Pendulum(length=1.0, mass=1, gravity=9.81)
 
     # Simulation parameters
     initial_state = [0, 0]  # Initial state [theta, omega]
@@ -66,8 +66,24 @@ if __name__ == "__main__":
         return 1.2*t
     def square_wave_torque(t, frequency=0.2, amplitude=1):
         return amplitude * np.sign(np.sin(2 * np.pi * frequency * t))
+    from scipy.interpolate import interp1d
+
     
-    pendulum.set_torque_profile(square_wave_torque)
+    # Read data from the data file
+    loaded_data = np.load('data.npy', allow_pickle=True).item()
+    X = loaded_data['X']
+    Y = loaded_data['Y']
+    # Perform interpolation to smooth the curve
+    f = interp1d(X, Y, kind='cubic', fill_value='extrapolate')
+    f_linear = interp1d(X[-2:], Y[-2:], kind='linear')
+    # Define your function my_torque(t)
+    def my_torque(t):
+        if t> X[-2]:
+            return f_linear(t)-0.66
+        else:
+            return f(t)
+    
+    pendulum.set_torque_profile(my_torque)
 
     # Simulate and plot
     solution = pendulum.simulate(initial_state, simulation_time)
