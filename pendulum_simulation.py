@@ -85,17 +85,17 @@ class Pendulum:
         if save_file:
             if os.path.exists(save_file):
                 # Append new data to existing file
-                with open(save_file, 'r') as file:
-                    existing_data = json.load(file)
+                #with open(save_file, 'r') as file:
+                #    existing_data = json.load(file)
+                #existing_data.append(data_to_save)
 
-                existing_data.append(data_to_save)
-
-                with open(save_file, 'w') as file:
-                    json.dump(existing_data, file)
+                with open(save_file, 'a+') as file:
+                    file.write('\n')
+                    json.dump(data_to_save, file)
             else:
                 # Create a new file if it doesn't exist
                 with open(save_file, 'w') as file:
-                    json.dump([data_to_save], file)
+                    json.dump(data_to_save, file)
         return data_to_save
 
 # Example usage

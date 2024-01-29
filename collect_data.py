@@ -6,9 +6,9 @@ if __name__ == "__main__":
     # Simulation parameters
     initial_state = [0, 0]  # Initial state [theta, omega]
     simulation_time = (0, 10)  # Simulation time (start, end)
-    for i in range(5, 15):
+    for i in range(5, 20):
     	print(f'number of sample torque points: {i}')
-    	for j in range(2):
+    	for j in range(200):
     		torque_data = pendulum.generate_random_torque_data(num_points=i)
     		data = pendulum.run_simulation(torque_data, initial_state, simulation_time, save_file='mydata.json')
 
