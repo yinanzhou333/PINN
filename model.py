@@ -12,6 +12,8 @@ class TorquePredictionModel:
     def _build_model(self, input_shape, output_shape):
         model = models.Sequential()
         model.add(layers.Dense(64, activation='relu', input_shape=(input_shape,)))
+        model.add(layers.Dense(128, activation='relu'))
+        model.add(layers.Dense(256, activation='relu'))
         model.add(layers.Dense(32, activation='relu'))
         model.add(layers.Dense(output_shape, activation='linear'))  # Output layer for regression
         model.compile(optimizer='adam', loss='mean_squared_error')
@@ -23,7 +25,7 @@ class TorquePredictionModel:
         loss = tf.keras.losses.mean_squared_error(cos_theta_true, cos_theta_pred)
         return loss
 
-    def train(self, input_data, target_data, validation_data=None, epochs=50, batch_size=32):
+    def train(self, input_data, target_data, validation_data=None, epochs=200, batch_size=32):
         history = self.model.fit(input_data, target_data, epochs=epochs, batch_size=batch_size, validation_data=validation_data)
         return history
 
