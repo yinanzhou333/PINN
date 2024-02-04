@@ -9,10 +9,10 @@ from deepxde.backend import tf
 import matplotlib.pyplot as plt
 from pendulum_simulation import Pendulum
 # Set random seed
-#seed = 0
-#np.random.seed(seed)
+seed = 0
+np.random.seed(seed)
 #tf.random.set_seed(seed)
-#dde.backend.tf.random.set_random_seed(seed)
+dde.backend.tf.random.set_random_seed(seed)
 
 # Set hyperparameters
 n_output = 2 # theta, torq_norm

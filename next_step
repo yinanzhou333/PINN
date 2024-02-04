@@ -1,1 +1,1 @@
-implement PINN
+should try to imporve this method to ensure the theta is correct given the PINN generated torque.
