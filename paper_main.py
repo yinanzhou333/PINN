@@ -22,7 +22,7 @@ num_domain = 1000
 n_adam = 5000
 
 lr = 1e-2 # for Adam
-loss_weights = [1., 10., 1., 1., 1.]
+loss_weights = [1., 1., 1., 1., 1.]
 
 # Set physical parameters
 tmin, tmax = 0.0, 10.0
