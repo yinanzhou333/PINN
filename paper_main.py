@@ -119,10 +119,6 @@ if __name__ == "__main__":
         # One command line argument, assume it's the model filename to restore
         model_filename = sys.argv[1]
 
-        if not os.path.isfile(model_filename):
-            print(f"Error: Model file '{model_filename}' not found.")
-            sys.exit(1)
-
         restore_model(model_filename)
     else:
         print("Usage: python script.py [model_filename]")
