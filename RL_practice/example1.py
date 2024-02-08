@@ -1,0 +1,59 @@
+import numpy as np
+
+class CustomEnvironment:
+    def __init__(self):
+        # Define the environment parameters
+        self.num_states = 4
+        self.num_actions = 2
+        self.goal_state = 3
+        self.hole_state = 1
+
+        # Initialize the state
+        self.current_state = 0
+
+    def reset(self):
+        # Reset the environment to the initial state
+        self.current_state = 0
+        return self.current_state
+
+    def step(self, action):
+        # Take an action and observe the new state and reward
+
+        # Check if the action is valid
+        if action not in range(self.num_actions):
+            raise ValueError("Invalid action!")
+
+        # Define the transition dynamics
+        transition_probs = np.array([[0.9, 0.1, 0, 0],  # Transition probabilities for moving left (action 0)
+                                     [0, 0, 0.2, 0.8]])  # Transition probabilities for moving right (action 1)
+
+        # Take the chosen action based on transition probabilities
+        next_state = np.random.choice(range(self.num_states), p=transition_probs[action])
+        self.current_state = next_state
+
+        # Define the rewards
+        rewards = {self.goal_state: 1, self.hole_state: -1}
+        reward = rewards.get(next_state, 0)  # Assign 0 reward for other states
+
+        # Check if the episode is done
+        done = next_state in [self.goal_state, self.hole_state]
+
+        return next_state, reward, done
+
+# Create the CustomEnvironment
+env = CustomEnvironment()
+
+# Perform a random policy in the environment for a few steps
+num_steps = 5
+for step in range(num_steps):
+    # Choose a random action (0 or 1)
+    action = np.random.choice(range(env.num_actions))
+    
+    # Take the chosen action and observe the new state and reward
+    next_state, reward, done = env.step(action)
+
+    # Print the results
+    print(f"Step {step + 1}: Action {action}, Next State {next_state}, Reward {reward}, Done {done}")
+
+# Reset the environment for a new episode
+env.reset()

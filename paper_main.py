@@ -22,7 +22,7 @@ num_domain = 1000
 n_adam = 5000
 
 lr = 1e-2 # for Adam
-loss_weights = [1., 1., 1., 1., 1.]
+loss_weights = [1., 10., 1., 1., 1.]
 
 # Set physical parameters
 tmin, tmax = 0.0, 10.0
@@ -67,14 +67,13 @@ ic2 = dde.icbc.IC(geom, lambda t: np.array([0.]), initial, component=1)
 ic3 = dde.icbc.NeumannBC(geom, lambda t: np.array([0.]), boundary_left, component=0)
 opt = Custom_BC(geom, lambda t: np.array([target]), boundary_right) # custom ICBC
 data = dde.data.PDE(geom, ode, [ic1, ic2, ic3, opt], num_domain=num_domain, num_boundary=2)
-net = dde.nn.FNN([1] + [64] * 3 + [n_output], "tanh", "Glorot normal")
+net = dde.nn.FNN([1] + [128] * 3 + [n_output], "tanh", "Glorot normal")
 resampler = dde.callbacks.PDEPointResampler(period=100)
 #dde.optimizers.config.set_LBFGS_options(ftol=np.nan, gtol=np.nan, maxiter=8000, maxfun=8000)
 
 model = dde.Model(data, net)
-
+model.compile("adam", lr=lr, loss_weights=loss_weights)
 def train_model():
-    model.compile("adam", lr=lr, loss_weights=loss_weights)
     losshistory, train_state = model.train(display_every=10, iterations=n_adam, callbacks=[resampler])
     model.compile("L-BFGS", loss_weights=loss_weights)
     losshistory, train_state = model.train(display_every=10)
